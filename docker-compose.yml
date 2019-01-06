@@ -16,6 +16,7 @@ services:
       COCKROACH_CERTS_DIR: /certs/common
       CERTS_NODES: "node1;node2;node3;node4;node5"
       CERTS_CLIENTS: "root"
+      COCKROACH_INSECURE: "TRUE"
     networks:
       - roachnet
   node1:
@@ -24,6 +25,7 @@ services:
     environment:
       PRIMARY_NODE: node1
       COCKROACH_CERTS_DIR: /certs/common
+      COCKROACH_INSECURE: "TRUE"
     volumes:
       - $PWD/certs-common:/certs/common
       - $PWD/files/roach-start.sh:/roach-start.sh
@@ -43,6 +45,7 @@ services:
     environment:
       PRIMARY_NODE: node1
       COCKROACH_CERTS_DIR: /certs/common
+      COCKROACH_INSECURE: "TRUE"
     volumes:
       - $PWD/certs-common:/certs/common
       - $PWD/files/roach-start.sh:/roach-start.sh
@@ -56,6 +59,7 @@ services:
     environment:
       PRIMARY_NODE: node1
       COCKROACH_CERTS_DIR: /certs/common
+      COCKROACH_INSECURE: "TRUE"
     volumes:
       - $PWD/certs-common:/certs/common
       - $PWD/files/roach-start.sh:/roach-start.sh
@@ -69,6 +73,7 @@ services:
     environment:
       PRIMARY_NODE: node1
       COCKROACH_CERTS_DIR: /certs/common
+      COCKROACH_INSECURE: "TRUE"
     volumes:
       - $PWD/certs-common:/certs/common
       - $PWD/files/roach-start.sh:/roach-start.sh
@@ -82,6 +87,7 @@ services:
     environment:
       PRIMARY_NODE: node1
       COCKROACH_CERTS_DIR: /certs/common
+      COCKROACH_INSECURE: "TRUE"
     volumes:
       - $PWD/certs-common:/certs/common
       - $PWD/files/roach-start.sh:/roach-start.sh
