@@ -5,6 +5,7 @@ set -eu
 ROACHBIN="/cockroach/cockroach.sh"
 CERTS_DIR="${COCKROACH_CERTS_DIR:-"/certs/common"}"
 COCKROACH_INSECURE="${COCKROACH_INSECURE:-"TRUE"}"
+COCKROACH_STORE="${COCKROACH_STORE:-"path=/data,attrs=ssd,size=10G"}"
 
 if [ "${1:-}" == "" ]; then
   /wait-for-it.sh roach-cert-init:8081 -s -t 60 -- $0 start
@@ -32,6 +33,7 @@ if [ "${1}" == "start" ]; then
     ($0 wait-init)&
   fi
   exec $ROACHBIN start \
+    --store="$COCKROACH_STORE" \
     --advertise-addr="$(hostname)" \
     --listen-addr="0.0.0.0" \
     $_extra_opts
