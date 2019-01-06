@@ -1,0 +1,109 @@
+---
+version: "2"
+
+services:
+  roach-cert-init:
+    image: cockroachdb/cockroach
+    volumes:
+      #- ./certs:/certs
+      - $PWD/certs-ca:/certs/ca
+      - $PWD/certs-common:/certs/common
+      - ./files/roach-certs.sh:/roach-certs.sh
+    command: shell -c "/bin/bash /roach-certs.sh"
+    environment:
+      CERTS_CA_PUB_DIR: /certs/ca
+      CERTS_CA_PRIV_DIR: /certs/ca
+      COCKROACH_CERTS_DIR: /certs/common
+      CERTS_NODES: "node1;node2;node3;node4;node5"
+      CERTS_CLIENTS: "root"
+    networks:
+      - roachnet
+  node1:
+    image: cockroachdb/cockroach
+    hostname: node1
+    environment:
+      PRIMARY_NODE: node1
+      COCKROACH_CERTS_DIR: /certs/common
+    volumes:
+      - $PWD/certs-common:/certs/common
+      - $PWD/files/roach-start.sh:/roach-start.sh
+      - $PWD/deps/wait/wait-for-it.sh:/wait-for-it.sh
+    command: shell -c "/bin/bash /roach-start.sh"
+    networks:
+      - roachnet
+    expose:
+      - 8080
+      - 26257
+    ports:
+      - 8080:8080
+      - 26257:26257
+  node2:
+    image: cockroachdb/cockroach
+    hostname: node2
+    environment:
+      PRIMARY_NODE: node1
+      COCKROACH_CERTS_DIR: /certs/common
+    volumes:
+      - $PWD/certs-common:/certs/common
+      - $PWD/files/roach-start.sh:/roach-start.sh
+      - $PWD/deps/wait/wait-for-it.sh:/wait-for-it.sh
+    command: shell -c "/bin/bash /roach-start.sh"
+    networks:
+      - roachnet
+  node3:
+    image: cockroachdb/cockroach
+    hostname: node3
+    environment:
+      PRIMARY_NODE: node1
+      COCKROACH_CERTS_DIR: /certs/common
+    volumes:
+      - $PWD/certs-common:/certs/common
+      - $PWD/files/roach-start.sh:/roach-start.sh
+      - $PWD/deps/wait/wait-for-it.sh:/wait-for-it.sh
+    command: shell -c "/bin/bash /roach-start.sh"
+    networks:
+      - roachnet
+  node4:
+    image: cockroachdb/cockroach
+    hostname: node4
+    environment:
+      PRIMARY_NODE: node1
+      COCKROACH_CERTS_DIR: /certs/common
+    volumes:
+      - $PWD/certs-common:/certs/common
+      - $PWD/files/roach-start.sh:/roach-start.sh
+      - $PWD/deps/wait/wait-for-it.sh:/wait-for-it.sh
+    command: shell -c "/bin/bash /roach-start.sh"
+    networks:
+      - roachnet
+  node5:
+    image: cockroachdb/cockroach
+    hostname: node5
+    environment:
+      PRIMARY_NODE: node1
+      COCKROACH_CERTS_DIR: /certs/common
+    volumes:
+      - $PWD/certs-common:/certs/common
+      - $PWD/files/roach-start.sh:/roach-start.sh
+      - $PWD/deps/wait/wait-for-it.sh:/wait-for-it.sh
+    command: shell -c "/bin/bash /roach-start.sh"
+    networks:
+      - roachnet
+
+networks:
+  roachnet:
+    external: false
+
+#volumes:
+#  certs-ca:
+#    driver: local
+#    driver_opts:
+#      type: none
+#      device: $PWD/certs-ca
+#      o: bind
+#  certs-common:
+#    driver: local
+#    driver_opts:
+#      type: none
+#      device: $PWD/certs-common
+#      o: bind
